@@ -1,0 +1,25 @@
+version: '3'
+services:
+  #main service
+  web:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    build:
+      # do not use docker files cause has other name, use the current dir 
+      #with what it contains, as image sources
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/module_names
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/module_names
+      - .:/app
+    command: ["npm", "run", "test"]
