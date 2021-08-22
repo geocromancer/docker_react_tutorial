@@ -5,4 +5,13 @@ services:
 before_install:
   - docker build -t geonuta/docker_react_tutorial -f Dockerfile.dev . 
 script:
-  - docker run geonuta/docker_react_tutorial npm run test -- --coverage
+  - docker run -e CI=true geonuta/docker_react_tutorial npm run test
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-central-1"
+  app: "docker_react_tutorial"
+  env: "Dockerreacttutorial-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-853376040332"
+  bucket_path: "docker_react_tutorial"
+  on:
+    branch: master
